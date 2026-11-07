@@ -1,0 +1,83 @@
+/* Служебные страницы (вход, регистрация, настройки) — в том же «терминальном» стиле */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fg:#ffb02e;--dim:#bd7b00;--faint:#4d3300;--bg:#0c0800;--panel:#130d02;--bad:#ff6a4d;--ok:#6fe37a}
+html{background:var(--bg);color:var(--fg)}
+body{font:500 16px/1.5 "Plex",ui-monospace,Menlo,Consolas,monospace;min-height:100vh;
+  background:radial-gradient(ellipse at 50% 0%,#1f1400 0%,var(--bg) 60%)}
+a{color:var(--fg)}
+h1,h2{font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+h1{font-size:20px}
+h2{font-size:14px;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;border-bottom:1px solid var(--faint)}
+p,li{color:#e6b45a}
+.dim{color:var(--dim)}
+small{color:var(--dim);font-size:13px}
+code,.mono{font-family:inherit;background:#1d1301;border:1px solid var(--faint);padding:1px 6px;border-radius:2px;color:var(--fg);word-break:break-all}
+
+.card{background:var(--panel);border:1px solid var(--faint);padding:20px;margin-bottom:20px}
+label{display:block;font-size:13px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;margin:12px 0 4px}
+input[type=text],input[type=password],input[type=email],input[type=number],input[type=datetime-local],select{
+  width:100%;background:#0a0600;color:var(--fg);border:1px solid var(--dim);padding:9px 11px;font:inherit;border-radius:0;outline:none}
+input:focus,select:focus{border-color:var(--fg);box-shadow:0 0 0 1px var(--fg)}
+input[type=range]{width:100%;accent-color:var(--fg)}
+input[type=checkbox],input[type=radio]{accent-color:var(--fg);width:17px;height:17px;vertical-align:-3px;margin-right:8px}
+input[type=color]{width:42px;height:34px;border:1px solid var(--dim);background:#0a0600;padding:2px;cursor:pointer}
+button,.btn{font:700 14px "Plex",monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  color:var(--bg);background:var(--fg);border:1px solid var(--fg);padding:9px 16px;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{filter:brightness(1.12)}
+button.ghost,.btn.ghost{background:transparent;color:var(--fg);border-color:var(--dim)}
+button.danger{background:transparent;color:var(--bad);border-color:var(--bad)}
+button:disabled{opacity:.45;cursor:wait}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.msg{margin-top:12px;font-size:14px;min-height:20px}
+.msg.err{color:var(--bad)}.msg.ok{color:var(--ok)}
+
+/* вход / регистрация */
+.auth{max-width:420px;margin:0 auto;padding:12vh 16px 0}
+.auth h1{margin-bottom:6px;text-shadow:0 0 12px rgba(255,160,0,.5)}
+.auth .sub{margin-bottom:22px}
+.auth .card{padding:24px}
+.auth button{width:100%;margin-top:20px}
+.auth .alt{margin-top:16px;text-align:center;font-size:14px}
+
+/* настройки */
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid var(--faint)}
+.top h1{text-shadow:0 0 12px rgba(255,160,0,.45)}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,560px);gap:24px;max-width:1280px;margin:24px auto;padding:0 24px}
+@media (max-width:980px){.wrap{grid-template-columns:1fr}.preview{position:static!important}}
+.preview{position:sticky;top:16px;align-self:start}
+.screenbox{position:relative;width:100%;background:#000;border:10px solid #1a1308;border-radius:22px;box-shadow:0 0 0 2px #2a1d08,0 12px 40px rgba(0,0,0,.6);overflow:hidden}
+.screenbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.fmt{display:flex;gap:6px;margin:12px 0 0;flex-wrap:wrap}
+.fmt button{padding:5px 10px;font-size:12px}
+.fmt button.on{background:var(--fg);color:var(--bg)}
+ol.steps{padding-left:20px;margin:6px 0 4px}
+ol.steps li{margin:6px 0}
+.status{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);flex:none}
+.dot.bad{background:var(--bad);box-shadow:0 0 8px var(--bad)}
+
+.cal{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;padding:12px 0;border-top:1px solid var(--faint)}
+.cal:first-of-type{border-top:0}
+.cal .name{font-weight:700;display:flex;align-items:center;gap:10px}
+.cal .fields{display:grid;grid-template-columns:1fr 90px auto auto;gap:8px;align-items:end;grid-column:1 / -1}
+.cal .fields label{margin:0 0 3px;font-size:11px}
+.shapes{display:flex;gap:4px}
+.shapes button{padding:0;width:30px;height:30px;background:transparent;border:1px solid var(--faint);display:grid;place-items:center}
+.shapes button.on{border-color:var(--fg);background:#2a1c00}
+.g{display:inline-block;width:15px;height:15px;background:var(--c,var(--fg))}
+.g0{clip-path:polygon(50% 4%,97% 94%,3% 94%)}.g1{clip-path:polygon(6% 6%,94% 6%,94% 94%,6% 94%)}.g2{border-radius:50%}
+.g3{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.g4{clip-path:polygon(34% 0,66% 0,66% 34%,100% 34%,100% 66%,66% 66%,66% 100%,34% 100%,34% 66%,0 66%,0 34%,34% 34%)}
+.g5{clip-path:polygon(3% 6%,97% 6%,50% 96%)}
+
+.themes{display:flex;gap:8px;flex-wrap:wrap}
+.themes label{margin:0;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--faint);cursor:pointer;color:var(--fg);text-transform:none;letter-spacing:0;font-size:14px}
+.themes label:has(input:checked){border-color:var(--fg);background:#2a1c00}
+.sw{width:14px;height:14px;border-radius:50%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.check{display:flex;align-items:center;margin:12px 0 0;color:var(--fg);text-transform:none;letter-spacing:0;font-size:15px}
+.url{display:flex;gap:8px}
+.url code{flex:1;padding:9px 11px}
+pre{white-space:pre-wrap;font:inherit;font-size:13px;background:#0a0600;border:1px solid var(--faint);padding:10px;color:#e6b45a;margin-top:8px}
+.hint{font-size:13px;color:var(--dim);margin-top:6px}

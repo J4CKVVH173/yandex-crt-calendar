@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Расписание</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="stylesheet" href="/static/css/fonts.css">
+<link rel="stylesheet" href="/static/css/display.css">
+</head>
+<body data-theme="amber" data-fx="2">
+<div id="screen">
+  <div id="scene"></div>
+  <canvas id="particles"></canvas>
+  <div id="garland"></div>
+  <div id="inner">
+    <header id="head">
+      <div id="clock"><span id="hh">--</span><span id="colon">:</span><span id="mm">--</span><span id="ss"></span></div>
+      <div id="date"><div id="wd"></div><div id="dm"></div></div>
+    </header>
+
+    <section id="hero" class="calm">
+      <div id="h-top"><span id="h-glyph" class="g"></span><span id="h-tag"></span><span id="h-cal"></span></div>
+      <div id="h-count"></div>
+      <div id="h-title"></div>
+      <div id="h-meta"></div>
+      <div id="h-bar"><i></i></div>
+      <div id="h-after"></div>
+    </section>
+
+    <section id="tl"></section>
+    <section id="agenda"></section>
+
+    <footer id="foot">
+      <div id="legend"></div>
+      <div id="sync"></div>
+    </footer>
+  </div>
+
+  <div class="fx" id="fx-scan"></div>
+  <div class="fx" id="fx-roll"></div>
+  <div class="fx" id="fx-vig"></div>
+  <div class="fx" id="fx-gloss"></div>
+  <div class="fx" id="fx-flick"></div>
+  <div class="fx" id="dim"></div>
+</div>
+<script src="/static/js/decor.js"></script>
+<script src="/static/js/display.js"></script>
+</body>
+</html>

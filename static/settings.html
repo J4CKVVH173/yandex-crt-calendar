@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Настройки — Ламповый календарь</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="stylesheet" href="/static/css/fonts.css"><link rel="stylesheet" href="/static/css/app.css">
+<style>.in{position:relative;width:100%;aspect-ratio:var(--ar,4/3)}.cal>.check{justify-self:end;margin:0}</style>
+</head>
+<body>
+<header class="top">
+  <h1>Ламповый календарь</h1>
+  <div class="row"><span class="dim" id="who"></span><button class="ghost" id="logout">Выйти</button></div>
+</header>
+
+<div class="wrap">
+<div>
+  <section class="card">
+    <h2>1 · Яндекс Календарь</h2>
+    <div id="y-body"></div>
+  </section>
+
+  <section class="card">
+    <h2>2 · Календари</h2>
+    <p class="hint" style="margin:-4px 0 8px">Слои Яндекс Календаря (работа, личное…) — отдельные календари. Выберите, какие показывать, и как их различать на экране: цветом и фигуркой (на одноцветном экране цвет не виден, поэтому фигурка и штриховка важнее).</p>
+    <div id="cals"></div>
+  </section>
+
+  <section class="card">
+    <h2>3 · Внешний вид</h2>
+    <label>Цвет люминофора</label>
+    <div class="themes" id="themes">
+      <label><input type="radio" name="theme" value="amber" data-s="theme"><i class="sw" style="background:#ffb02e"></i>Янтарь</label>
+      <label><input type="radio" name="theme" value="green" data-s="theme"><i class="sw" style="background:#4dff88"></i>Зелёный</label>
+      <label><input type="radio" name="theme" value="white" data-s="theme"><i class="sw" style="background:#e9f0ff"></i>Белый</label>
+      <label><input type="radio" name="theme" value="color" data-s="theme"><i class="sw" style="background:conic-gradient(#ff9f1a,#4cd964,#5ac8fa,#ff5e7e,#ff9f1a)"></i>Цветной</label>
+      <label><input type="radio" name="theme" value="autumn" data-s="theme"><i class="sw" style="background:linear-gradient(135deg,#ffad5c 50%,#e2562a 50%)"></i>Осень</label>
+      <label><input type="radio" name="theme" value="halloween" data-s="theme"><i class="sw" style="background:linear-gradient(135deg,#ff8a1f 50%,#a96bff 50%)"></i>Хэллоуин</label>
+      <label><input type="radio" name="theme" value="newyear" data-s="theme"><i class="sw" style="background:linear-gradient(135deg,#ffe08a 50%,#ff5a5a 50%)"></i>Новый год</label>
+      <label><input type="radio" name="theme" value="winter" data-s="theme"><i class="sw" style="background:linear-gradient(135deg,#c6e9ff 50%,#79c0ff 50%)"></i>Зима</label>
+      <label><input type="radio" name="theme" value="season" data-s="theme"><i class="sw" style="background:conic-gradient(#ffad5c,#a96bff,#ffe08a,#79c0ff,#ffad5c)"></i>Авто по сезону</label>
+    </div>
+    <div class="grid2">
+      <div><label>ЭЛТ-эффекты: <span id="fx-v"></span></label><input type="range" data-s="fx" min="0" max="3" step="1"></div>
+      <div><label>Размер текста: <span id="fontScale-v"></span></label><input type="range" data-s="fontScale" min="0.7" max="1.6" step="0.05"></div>
+      <div><label>Поля от краёв: <span id="safe-v"></span></label><input type="range" data-s="safe" min="0" max="8" step="1"></div>
+      <div><label>Раскладка</label>
+        <select data-s="layout"><option value="auto">Авто — по формату экрана</option><option value="wide">Широкая (две колонки)</option><option value="stack">Столбиком</option></select></div>
+      <div><label>Дней в повестке</label>
+        <select data-s="days"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>7</option></select></div>
+      <div><label>Подсвечивать встречу за, мин</label><input type="number" data-s="warnMinutes" min="5" max="60"></div>
+    </div>
+    <label>Часовой пояс</label>
+    <select data-s="timezone" id="tz"></select>
+    <label class="check"><input type="checkbox" data-s="decor">Праздничные украшения (листья, снег, гирлянда, летучие мыши)</label>
+    <label class="check"><input type="checkbox" data-s="showSeconds">Показывать секунды</label>
+    <label class="check"><input type="checkbox" data-s="hideDeclined">Скрывать события, от которых вы отказались</label>
+    <label class="check"><input type="checkbox" data-s="maskPrivate">Закрытые события («видно только мне») показывать как «Занято»</label>
+    <label class="check"><input type="checkbox" data-s="burnIn">Слегка «плавать» картинке (защита ЭЛТ от выгорания)</label>
+    <label class="check"><input type="checkbox" data-s="nightEnabled">Ночью приглушать яркость</label>
+    <div class="grid2">
+      <div><label>С часа</label><input type="number" data-s="nightFrom" min="0" max="23"></div>
+      <div><label>До часа</label><input type="number" data-s="nightTo" min="0" max="23"></div>
+    </div>
+    <label>Ночная яркость: <span id="nightLevel-v"></span></label>
+    <input type="range" data-s="nightLevel" min="0.15" max="1" step="0.05">
+    <div class="msg" id="s-msg"></div>
+  </section>
+
+  <section class="card">
+    <h2>4 · Адрес для монитора</h2>
+    <div class="url"><code id="u-code"></code><button class="ghost" id="u-copy">Копировать</button></div>
+    <div class="row" style="margin-top:12px">
+      <a class="btn" id="u-open" target="_blank" rel="noopener">Открыть на весь экран</a>
+      <button class="danger" id="u-regen">Сменить адрес</button>
+    </div>
+    <p class="hint">В адресе зашит секретный ключ, поэтому монитору не нужно логиниться. Зайдя в настройки с самой малинки, замените <code>localhost</code> в адресе на её IP в вашей сети — тогда он откроется с монитора.</p>
+    <label>Запуск браузера на весь экран (на малинке)</label>
+    <pre id="kiosk"></pre>
+  </section>
+</div>
+
+<aside class="preview">
+  <h2>Предпросмотр</h2>
+  <div class="screenbox"><div class="in" id="in"><iframe id="pv" title="Предпросмотр экрана"></iframe></div></div>
+  <div class="fmt" id="fmt">
+    <button class="on" data-ar="4/3">4:3</button><button class="ghost" data-ar="16/10">16:10</button>
+    <button class="ghost" data-ar="16/9">16:9</button><button class="ghost" data-ar="3/4">Портрет</button>
+  </div>
+  <label>Подкрутить время в предпросмотре</label>
+  <div class="row"><input type="datetime-local" id="at" style="flex:1"><button class="ghost" id="at-reset">Сейчас</button></div>
+  <p class="hint">Удобно, чтобы посмотреть, как экран выглядит перед встречей, во время неё или поздно вечером.</p>
+</aside>
+</div>
+<script src="/static/js/settings.js"></script>
+</body></html>

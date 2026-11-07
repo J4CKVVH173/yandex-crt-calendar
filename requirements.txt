@@ -1,0 +1,6 @@
+fastapi>=0.110
+uvicorn>=0.29
+caldav>=3.0,<4
+recurring-ical-events>=3.0
+cryptography>=42
+tzdata

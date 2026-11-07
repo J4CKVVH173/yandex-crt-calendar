@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Регистрация — Ламповый календарь</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="stylesheet" href="/static/css/fonts.css"><link rel="stylesheet" href="/static/css/app.css"></head>
+<body>
+<main class="auth">
+  <h1>Регистрация</h1>
+  <p class="sub dim">Учётная запись хранится только на вашей Raspberry Pi</p>
+  <p class="hint" style="margin:-8px 0 14px">Придумайте любые логин и пароль — это аккаунт <b>только для этого приложения</b>. Данные Яндекса вы введёте на следующем шаге, в настройках.</p>
+  <form class="card" id="f" autocomplete="on">
+    <label for="login">Логин</label>
+    <input type="text" id="login" name="username" autocomplete="username" required autofocus minlength="3" maxlength="40">
+    <label for="password">Пароль (не короче 8 символов)</label>
+    <input type="password" id="password" name="new-password" autocomplete="new-password" required minlength="8">
+    <label for="password2">Повторите пароль</label>
+    <input type="password" id="password2" autocomplete="new-password" required minlength="8">
+    <button type="submit" id="go">Создать аккаунт</button>
+    <div class="msg err" id="msg" role="alert"></div>
+    <div class="alt">Уже есть аккаунт? <a href="/login">Войти</a></div>
+  </form>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+fetch('/api/config').then(r => r.json()).then(c => {
+  if (!c.registration) { $('f').innerHTML = '<p>Регистрация на этом сервере отключена.</p><div class="alt"><a href="/login">Войти</a></div>'; }
+});
+$('f').addEventListener('submit', async e => {
+  e.preventDefault(); $('msg').textContent = '';
+  if ($('password').value !== $('password2').value) { $('msg').textContent = 'Пароли не совпадают'; return; }
+  $('go').disabled = true;
+  try {
+    const r = await fetch('/api/register', {method: 'POST', headers: {'content-type': 'application/json'},
+      body: JSON.stringify({login: $('login').value, password: $('password').value})});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.detail || 'Ошибка ' + r.status);
+    location.href = '/settings';
+  } catch (err) { $('msg').textContent = err.message; $('go').disabled = false; }
+});
+</script>
+</body></html>
