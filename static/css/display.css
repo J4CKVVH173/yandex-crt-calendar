@@ -74,6 +74,9 @@ body.wide #dm{font-size:1.3rem}
 #h-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--p,0%);background:var(--accent)}
 #h-after{display:none;grid-area:after;font-size:1.2rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #h-after b{color:var(--fg);font-weight:700}
+#h-after .after-row{display:flex;align-items:baseline;gap:.6rem;min-width:0}
+#h-after .after-label,#h-after .after-time,#h-after .after-extra{flex:none}
+#h-after .after-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
 
 /* широкий экран (16:9, 16:10): главный блок — в колонке слева, размеры считаются от его высоты (cq-единицы) */
 body.wide #hero,body.tall #hero{grid-template-columns:minmax(0,1fr);align-content:center;

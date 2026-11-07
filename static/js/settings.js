@@ -164,6 +164,7 @@ function postToPreview() {
 // ------------------------------------------------------------------------- адрес и превью
 function monitorUrl() { return `${location.origin}/d/${ME.displayToken}`; }
 function renderUrl() {
+  window.YacalPWA?.setToken(ME.displayToken);
   $('#u-code').textContent = monitorUrl();
   $('#u-open').href = monitorUrl();
   $('#kiosk').textContent = `chromium-browser --kiosk --noerrdialogs --disable-infobars --incognito \\\n  "${monitorUrl()}"`;

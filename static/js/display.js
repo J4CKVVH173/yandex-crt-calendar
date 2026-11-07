@@ -130,13 +130,19 @@ function relText(ms) {
 }
 const meta = e => `${hm(e.s)}–${hm(e.t)}` + (e.location ? ' · ' + e.location : '');
 const timed = () => E.filter(e => !e.allDay);
+const byStart = (a, b) => a.s - b.s || String(a.id).localeCompare(String(b.id));
+const afterRow = (label, event, time = '', extra = 0) =>
+  `<span class="after-row"><b class="after-label">${esc(label)}</b>` +
+  `<b class="after-title">${esc(event.title)}</b>` +
+  (time ? `<span class="after-time">${esc(time)}</span>` : '') +
+  (extra ? `<b class="after-extra">+${extra}</b>` : '') + '</span>';
 
 // ----------------------------------------------------------------------------------- главный блок
 function renderHero(now) {
   const cfg = eff();
   const warn = cfg.warnMinutes;
-  const live = timed().filter(e => e.s <= now && e.t > now).sort((a, b) => a.t - b.t || a.s - b.s);
-  const next = timed().filter(e => e.s > now).sort((a, b) => a.s - b.s);
+  const live = timed().filter(e => e.s <= now && e.t > now).sort(byStart);
+  const next = timed().filter(e => e.s > now).sort(byStart);
   const h = {cls: 'calm', color: null, tag: '', cal: '', glyph: '', count: '', title: '', meta: '', p: 0, after: ''};
 
   if (!haveData) {
@@ -148,9 +154,14 @@ function renderHero(now) {
     h.title = e.title; h.meta = meta(e);
     h.p = Math.min(100, Math.max(0, (now - e.s) / Math.max(1, e.t - e.s) * 100));
     if (e.t - now <= 5 * 60000) h.cls += ' ending';
-    const other = live[1];
+    const other = live.slice(1).sort((a, b) => a.t - b.t || byStart(a, b))[0];
     const n = next[0];
-    if (other) h.after = `ТАКЖЕ ИДЁТ · до ${hm(other.t)} · <b>${esc(other.title)}</b>`;
+    if (other) h.after = afterRow('ТАКЖЕ', other, `до ${hm(other.t)}`, live.length - 2);
+    else if (n && n.s < e.t) {
+      const ms = n.s - now, sec = Math.ceil(ms / 1000);
+      const remaining = ms <= 5 * 60000 ? `${Math.floor(sec / 60)}:${pad(sec % 60)}` : relText(ms);
+      h.after = afterRow(`ЧЕРЕЗ ${remaining}`, n);
+    }
     else if (n) h.after = `ДАЛЬШЕ · через ${relText(n.s - now)} · <b>${hm(n.s)}</b> ${esc(n.title)}`;
     else h.after = 'ДАЛЬШЕ СОБЫТИЙ НЕТ';
   } else if (next.length) {

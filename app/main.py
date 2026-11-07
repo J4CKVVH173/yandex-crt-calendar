@@ -53,7 +53,7 @@ async def guard(request: Request, call_next):
             return JSONResponse({"detail": "Недопустимый origin"}, status_code=403)
     response = await call_next(request)
     path = request.url.path
-    if path.startswith("/api/"):
+    if path.startswith("/api/") or path == "/manifest.webmanifest":
         response.headers["Cache-Control"] = "no-store"
     elif path.startswith("/static/fonts/"):
         response.headers["Cache-Control"] = "public, max-age=2592000"
@@ -135,6 +135,33 @@ def favicon():
 @app.get("/healthz", include_in_schema=False)
 def healthz():
     return {"ok": True, "version": VERSION}
+
+
+@app.get("/app", include_in_schema=False)
+def installed_app(request: Request):
+    user = security.session_user(request.cookies.get(COOKIE))
+    if not user:
+        return RedirectResponse("/login?next=app")
+    return RedirectResponse(f"/d/{user['display_token']}")
+
+
+@app.get("/manifest.webmanifest", include_in_schema=False)
+def manifest(t: str = ""):
+    if t and not db.q1("SELECT 1 FROM users WHERE display_token=?", (t,)):
+        raise HTTPException(404, "Экран не найден")
+    return JSONResponse({
+        "id": f"/d/{t}" if t else "/app",
+        "name": "Ламповый календарь", "short_name": "Календарь", "lang": "ru",
+        "start_url": f"/d/{t}" if t else "/app", "scope": "/",
+        "display": "standalone", "background_color": "#0c0800", "theme_color": "#0c0800",
+        "icons": [{"src": f"/static/icons/icon-{size}.png", "sizes": f"{size}x{size}",
+                   "type": "image/png", "purpose": "any"} for size in (192, 512)],
+    }, media_type="application/manifest+json", headers={"Cache-Control": "no-store"})
+
+
+@app.get("/sw.js", include_in_schema=False)
+def service_worker():
+    return FileResponse(STATIC / "sw.js", media_type="text/javascript")
 
 
 # ----------------------------------------------------------------------- auth
